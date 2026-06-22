@@ -6,9 +6,17 @@ Public MCP endpoint:
 https://security-rl.useimmaculate.com/mcp
 ```
 
-You do not need bearer tokens as the product experience. You need Google login as the product experience.
+User-facing auth is Google login through Dex/OIDC. Static bearer tokens are not the user install path.
 
-The reason the docs mention `Authorization: Bearer ...` is that OAuth and OIDC still send access tokens as bearer credentials on API calls. A Google login flow should look like this:
+OAuth-capable MCP clients discover auth from:
+
+```text
+https://security-rl.useimmaculate.com/.well-known/oauth-protected-resource/mcp
+```
+
+The server also returns this discovery URL in `WWW-Authenticate` when `/mcp` is called without a token.
+
+The reason the protocol still mentions `Authorization: Bearer ...` is that OAuth and OIDC send access tokens as bearer credentials on API calls. A Google login flow should look like this:
 
 ```text
 1. User clicks Connect with Google.
@@ -32,14 +40,14 @@ The auth middleware accepts two credential types:
 | Credential | Use |
 | --- | --- |
 | Dex/OIDC JWT from Google login | Primary user auth path. |
-| `AGENT_BEARER_TOKEN` | Fallback for worker pools, smoke tests, and MCP clients that cannot complete OAuth yet. |
+| `AGENT_BEARER_TOKEN` | Fallback for worker pools and smoke tests only. |
 
 Product requirement:
 
 ```text
 Normal user: Google login.
 Worker/service account: scoped service token.
-Raw shared bearer token: temporary fallback only.
+Raw shared bearer token: not a user-facing install path.
 ```
 
-For a true one-click MCP install, add a `/connect` page that performs the Google/Dex login and then writes or hands the resulting token to the local MCP client config. The wire protocol still uses bearer auth; the user no longer manually manages a bearer secret.
+For clients that do not support remote MCP OAuth yet, ship a local stdio proxy that performs Google/Dex login and injects the short-lived token into requests. The user should still never copy a long-lived shared token.
