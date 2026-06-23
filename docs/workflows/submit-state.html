@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Case Study: Submit Application State</title><meta name="description" content="Public MCP docs for developers and security professionals."><style>body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;color:#111827;background:#fff;line-height:1.6}.shell{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:100vh}.nav{background:#f8fafc;border-right:1px solid #e5e7eb;padding:28px 22px;position:sticky;top:0;height:100vh;overflow:auto}.nav h1{font-size:18px;margin:0 0 16px}.nav ul{list-style:none;margin:0;padding:0}.nav li{margin:8px 0}.nav a{color:#334155;text-decoration:none;font-size:14px}.nav a:hover{color:#0f172a;text-decoration:underline}.content{max-width:880px;padding:56px 64px 96px}.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:700}h1{font-size:42px;line-height:1.08;margin:8px 0 24px}h2{font-size:26px;margin-top:42px}h3{font-size:20px;margin-top:32px}pre{background:#0f172a;color:#e2e8f0;padding:18px;border-radius:8px;overflow:auto}code{background:#eef2ff;color:#1e1b4b;padding:2px 5px;border-radius:4px}pre code{background:transparent;color:inherit;padding:0}a{color:#155eef}.notice{background:#ecfeff;border:1px solid #a5f3fc;border-radius:8px;padding:14px 16px;margin:20px 0;color:#164e63}@media(max-width:860px){.shell{display:block}.nav{height:auto;position:relative}.content{padding:32px 22px}}</style></head><body><div class="shell"><aside class="nav"><h1>RL Environment MCP</h1><ul><li><a href="/security-rl-mcp-docs/">RL Environment MCP</a></li>
+<li><a href="/security-rl-mcp-docs/setup/endpoint-and-auth.html">Endpoint and Auth</a></li>
+<li><a href="/security-rl-mcp-docs/setup/connect-codex.html">Connect Codex</a></li>
+<li><a href="/security-rl-mcp-docs/setup/connect-claude-code.html">Connect Claude Code</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/mcp-control-plane.html">MCP Control Plane</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/environments.html">Environments</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/state-json.html">state.json</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/red-blue-boundaries.html">Red/Blue Boundaries</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/reward-and-trajectory.html">Reward and Trajectory</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/local-vs-hosted-agents.html">Local vs Hosted Agents</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/submit-state.html">Case Study: Submit Application State</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/run-state-json-experiment.html">Case Study: Red/Blue State Experiment</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/run-blue-llm-training-experiment.html">Case Study: Blue LLM Training</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/red-team-agent-loop.html">Case Study: Red Team Agent Loop</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/blue-team-agent-loop.html">Case Study: Blue Team Agent Loop</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/export-training-data.html">Case Study: Export Training Data</a></li>
+<li><a href="/security-rl-mcp-docs/tools/mcp-tool-reference.html">MCP Tool Reference</a></li>
+<li><a href="/security-rl-mcp-docs/roadmap/digital-twins.html">Digital Twins Roadmap</a></li>
+<li><a href="/security-rl-mcp-docs/operations/readiness-checks.html">Readiness Checks</a></li>
+<li><a href="/security-rl-mcp-docs/operations/troubleshooting.html">Troubleshooting</a></li></ul></aside><main class="content"><div class="eyebrow">Public MCP Documentation</div><h1>Case Study: Submit Application State</h1><div class="notice">For normal users, authentication is Google login through Dex/OIDC. Do not distribute shared bearer tokens.</div><p>A power user is working locally in Codex or Claude Code and wants to turn an existing application into an RL environment. The coding agent inspects the repo, infrastructure notes, public endpoints, identity configuration, and deployment model, then submits the application state through the MCP.</p>
+<h2>Scenario</h2>
+<p>The user has a Vercel Eve application and wants the security control plane to create an environment from the app&#x27;s current state. The first goal is not to run Red or Blue agents yet. The goal is to produce a validated environment record that later agents can use without re-discovering the application from scratch.</p>
+<h2>Actors</h2>
+<p>The power user owns the application and authenticates with Google through Dex. The local coding agent gathers facts and calls the MCP. The RL control plane validates and versions the submitted state.</p>
+<h2>MCP Tools Used</h2>
+<ul>
+<li><code>submit_full_application_state</code> when the agent can construct the whole <code>state.json</code> in one call.</li>
+<li><code>submit_application_state_section</code> when the agent has to submit discovery results in sections.</li>
+<li><code>finalize_application_state</code> when all required sections have been submitted.</li>
+<li><code>get_rl_environment</code> to confirm the environment ID, state version, and validation result.</li>
+</ul>
+<h2>Walkthrough</h2>
+<p>The agent first maps the app into the <code>state.json</code> schema: repository, runtime, public endpoints, users, credentials metadata, identity provider, data assets, detection rules, work items, and recent changes. Secrets are represented as references or descriptors, not raw values.</p>
+<p>If the state is small, the agent calls <code>submit_full_application_state</code> once. If discovery is incremental, it submits sections such as <code>repository</code>, <code>network_endpoints</code>, <code>application_cloud</code>, and <code>identity_provider</code> with <code>submit_application_state_section</code>, then calls <code>finalize_application_state</code>.</p>
+<p>The environment is created only after schema validation passes. The response includes the environment ID and the state version that future Red, Blue, experiment, assignment, and trajectory tools must reference.</p>
+<h2>Observable Outcome</h2>
+<p>The user gets a durable RL environment that represents the application&#x27;s current security-relevant state. The state can be read back with <code>get_rl_environment</code>, and future agents do not need broad repo or cloud access to start from the same baseline.</p>
+<h2>Data Produced</h2>
+<p>This case produces an environment record, a normalized <code>state.json</code>, validation diagnostics, and an initial state version. That version becomes the seed for Red/Blue tests and for the application&#x27;s future digital twin.</p></main></div></body></html>

@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Local vs Hosted Agents</title><meta name="description" content="Public MCP docs for developers and security professionals."><style>body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;color:#111827;background:#fff;line-height:1.6}.shell{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:100vh}.nav{background:#f8fafc;border-right:1px solid #e5e7eb;padding:28px 22px;position:sticky;top:0;height:100vh;overflow:auto}.nav h1{font-size:18px;margin:0 0 16px}.nav ul{list-style:none;margin:0;padding:0}.nav li{margin:8px 0}.nav a{color:#334155;text-decoration:none;font-size:14px}.nav a:hover{color:#0f172a;text-decoration:underline}.content{max-width:880px;padding:56px 64px 96px}.eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:700}h1{font-size:42px;line-height:1.08;margin:8px 0 24px}h2{font-size:26px;margin-top:42px}h3{font-size:20px;margin-top:32px}pre{background:#0f172a;color:#e2e8f0;padding:18px;border-radius:8px;overflow:auto}code{background:#eef2ff;color:#1e1b4b;padding:2px 5px;border-radius:4px}pre code{background:transparent;color:inherit;padding:0}a{color:#155eef}.notice{background:#ecfeff;border:1px solid #a5f3fc;border-radius:8px;padding:14px 16px;margin:20px 0;color:#164e63}@media(max-width:860px){.shell{display:block}.nav{height:auto;position:relative}.content{padding:32px 22px}}</style></head><body><div class="shell"><aside class="nav"><h1>RL Environment MCP</h1><ul><li><a href="/security-rl-mcp-docs/">RL Environment MCP</a></li>
+<li><a href="/security-rl-mcp-docs/setup/endpoint-and-auth.html">Endpoint and Auth</a></li>
+<li><a href="/security-rl-mcp-docs/setup/connect-codex.html">Connect Codex</a></li>
+<li><a href="/security-rl-mcp-docs/setup/connect-claude-code.html">Connect Claude Code</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/mcp-control-plane.html">MCP Control Plane</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/environments.html">Environments</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/state-json.html">state.json</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/red-blue-boundaries.html">Red/Blue Boundaries</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/reward-and-trajectory.html">Reward and Trajectory</a></li>
+<li><a href="/security-rl-mcp-docs/concepts/local-vs-hosted-agents.html">Local vs Hosted Agents</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/submit-state.html">Case Study: Submit Application State</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/run-state-json-experiment.html">Case Study: Red/Blue State Experiment</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/run-blue-llm-training-experiment.html">Case Study: Blue LLM Training</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/red-team-agent-loop.html">Case Study: Red Team Agent Loop</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/blue-team-agent-loop.html">Case Study: Blue Team Agent Loop</a></li>
+<li><a href="/security-rl-mcp-docs/workflows/export-training-data.html">Case Study: Export Training Data</a></li>
+<li><a href="/security-rl-mcp-docs/tools/mcp-tool-reference.html">MCP Tool Reference</a></li>
+<li><a href="/security-rl-mcp-docs/roadmap/digital-twins.html">Digital Twins Roadmap</a></li>
+<li><a href="/security-rl-mcp-docs/operations/readiness-checks.html">Readiness Checks</a></li>
+<li><a href="/security-rl-mcp-docs/operations/troubleshooting.html">Troubleshooting</a></li></ul></aside><main class="content"><div class="eyebrow">Public MCP Documentation</div><h1>Local vs Hosted Agents</h1><div class="notice">For normal users, authentication is Google login through Dex/OIDC. Do not distribute shared bearer tokens.</div><p>Default mode is local: the user runs Codex or Claude Code and those clients call the MCP server. Hosted-worker mode is optional for unattended VM-side worker pools.</p>
+<pre><code>power user -&gt; local coding agent -&gt; RL Environment MCP -&gt; Postgres + runtime workspaces + reward data</code></pre></main></div></body></html>
