@@ -27,7 +27,7 @@ Target product flow:
 codex mcp login rl_environment -> browser Google login -> Dex token stored for Codex MCP calls
 ```
 
-If the local Codex build cannot complete remote MCP OAuth yet, use a local auth proxy that owns the Google/Dex token. Do not give normal users a shared `AGENT_BEARER_TOKEN`.
+If the local Codex build cannot complete remote MCP OAuth yet, use a local auth proxy that owns the Google/Dex token. Do not give normal users a shared service token.
 
 
 ---
