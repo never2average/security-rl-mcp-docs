@@ -1,11 +1,28 @@
 # `get_daemon_status`
 
-Product-facing alias for current live tool `get_rl_daemon_status`.
+Reads the RL daemon status for assignment requeueing, scheduled work, and background maintenance.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `get_daemon_status` |
-| Current implementation | `get_rl_daemon_status` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this when assignments are stuck, episodes are not advancing, or background jobs are delayed.
+
+## Inputs
+
+- Optional daemon name or environment scope.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Daemon heartbeat, last tick, queue counts, requeue status, and recent errors.
+
+## Security Boundary
+
+Status output should stay operational and avoid leaking worker secrets. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `tick_daemon`
+- `requeue_agent_experiment_assignments`

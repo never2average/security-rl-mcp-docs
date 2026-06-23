@@ -1,11 +1,31 @@
 # `evaluate_blue_team_agent`
 
-Evaluate Blue-team LLM performance and improvement suggestions.
+Scores a Blue agent run or candidate fix.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `evaluate_blue_team_agent` |
-| Current implementation | `evaluate_blue_team_agent` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this after a Blue agent has attempted a fix, patch, or independent state improvement.
+
+## Inputs
+
+- Environment ID.
+- Run ID, assignment ID, fix ID, or episode ID.
+- Optional evaluation policy.
+
+## What Changes In The RL Environment
+
+The evaluator records Blue-specific scores and reward components.
+
+## What The Agent Gets Back
+
+Blue score, issue-closure result, state-validity result, regression notes, and reward details.
+
+## Security Boundary
+
+Evaluation should operate on defender-authorized state and sanitized evidence. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `record_blue_team_fix`
+- `export_blue_team_training_dataset`
+- `evaluate_agent_experiment`

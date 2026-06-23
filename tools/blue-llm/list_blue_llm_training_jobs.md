@@ -1,11 +1,28 @@
 # `list_blue_llm_training_jobs`
 
-List Blue-team LLM training jobs.
+Lists Blue LLM training jobs.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `list_blue_llm_training_jobs` |
-| Current implementation | `list_blue_llm_training_jobs` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this for operations dashboards, model lineage, or selecting a job to inspect.
+
+## Inputs
+
+- Optional status, config, dataset, environment, or date filters.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Job summaries with IDs, statuses, dataset references, config IDs, and timestamps.
+
+## Security Boundary
+
+Only jobs visible to the authenticated organization or user should be returned. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `get_blue_llm_training_job`
+- `start_blue_llm_training_job`

@@ -1,11 +1,30 @@
 # `list_red_blue_issues`
 
-List Red findings visible to this agent session.
+Lists Red/Blue issues for an environment or experiment.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `list_red_blue_issues` |
-| Current implementation | `list_red_blue_issues` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this for dashboards, Blue triage, evaluation, or audit review.
+
+## Inputs
+
+- Environment ID or experiment ID.
+- Optional status, severity, role, or state-version filters.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Issue summaries, status, severity, affected state version, linked fixes, and timestamps.
+
+## Security Boundary
+
+Issue details may be filtered by caller role and experiment policy. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `log_red_team_issue`
+- `get_blue_team_fix_queue`
+- `record_blue_team_fix`

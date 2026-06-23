@@ -1,11 +1,30 @@
 # `claim_next_agent_assignment`
 
-Atomically claim the next queued assignment for an external worker.
+Claims one assignment for a worker and creates a lease.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `claim_next_agent_assignment` |
-| Current implementation | `claim_next_agent_assignment` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this when a worker is ready to perform one unit of experiment work.
+
+## Inputs
+
+- Worker role.
+- Optional experiment ID, environment ID, and worker identity.
+
+## What Changes In The RL Environment
+
+One assignment moves from queued to leased, with ownership and lease expiry recorded.
+
+## What The Agent Gets Back
+
+Assignment ID, lease metadata, role-specific brief, environment ID, state version, and next instructions.
+
+## Security Boundary
+
+The returned assignment content must match the worker role. Red and Blue cannot receive the same state I/O. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `heartbeat_agent_assignment`
+- `record_agent_assignment_result`
+- `get_red_blue_agent_state`

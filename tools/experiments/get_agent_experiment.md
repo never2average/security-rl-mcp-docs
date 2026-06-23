@@ -1,11 +1,29 @@
 # `get_agent_experiment`
 
-Fetch one multiplexed agent experiment and assignment statuses.
+Reads the full metadata and status for one experiment.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `get_agent_experiment` |
-| Current implementation | `get_agent_experiment` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this when an agent or operator needs the current experiment plan, state, and progress.
+
+## Inputs
+
+- Experiment ID.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Experiment definition, target environment, status, episodes, assignments summary, and evaluation status.
+
+## Security Boundary
+
+The response should not leak role-private assignment content to callers that only need experiment metadata. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `list_agent_experiments`
+- `get_agent_experiment_episode`
+- `start_agent_experiment`

@@ -1,11 +1,28 @@
 # `list_blue_llm_configs`
 
-List registered Blue-team LLM configurations.
+Lists available Blue-team model configurations.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `list_blue_llm_configs` |
-| Current implementation | `list_blue_llm_configs` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this before choosing an active Blue model or comparing past configs.
+
+## Inputs
+
+- Optional environment, provider, active status, or owner filters.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Config summaries, active status, model labels, and timestamps.
+
+## Security Boundary
+
+Responses should not include raw provider credentials. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `get_active_blue_llm_config`
+- `set_active_blue_llm_config`

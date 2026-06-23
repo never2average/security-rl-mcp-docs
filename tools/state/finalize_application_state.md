@@ -1,11 +1,30 @@
 # `finalize_application_state`
 
-Validate a multipart submission and mark the RL environment ready or invalid.
+Finalizes a multipart state submission and promotes it into a usable RL environment.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `finalize_application_state` |
-| Current implementation | `finalize_application_state` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this after all required sections have been submitted through `submit_application_state_section`.
+
+## Inputs
+
+- The draft environment ID.
+- Optional finalize metadata, such as source commit, deployment label, or submitter note.
+
+## What Changes In The RL Environment
+
+The control plane performs whole-document validation, creates a state version, builds role-scoped views, and marks the environment ready or blocked.
+
+## What The Agent Gets Back
+
+The environment ID, ready status, state version, validation report, and any remaining blockers.
+
+## Security Boundary
+
+Finalize does not grant Red or Blue agents extra access. It only turns submitted state into the canonical environment record. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `submit_application_state_section`
+- `get_rl_environment`
+- `create_agent_experiment`

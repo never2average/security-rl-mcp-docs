@@ -1,11 +1,28 @@
 # `get_agent_assignment_output`
 
-Read bounded provider output for one experiment assignment.
+Reads the stored output for an assignment.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `get_agent_assignment_output` |
-| Current implementation | `get_agent_assignment_output` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this when evaluating results, debugging a run, or exporting trajectory data.
+
+## Inputs
+
+- Assignment ID.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Assignment result, status, evidence references, linked events, and timestamps.
+
+## Security Boundary
+
+Output visibility should follow the experiment role and organization permissions. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `record_agent_assignment_result`
+- `get_agent_experiment_episode`

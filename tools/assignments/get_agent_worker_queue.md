@@ -1,11 +1,29 @@
 # `get_agent_worker_queue`
 
-Inspect runnable, waiting, leased, and expired assignments across concurrent environments.
+Lists assignments available to a worker role.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `get_agent_worker_queue` |
-| Current implementation | `get_agent_worker_queue` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this when an external Codex, Claude Code, or Vercel Eve worker wants to know what it can claim.
+
+## Inputs
+
+- Worker role.
+- Optional environment ID, experiment ID, or queue filter.
+
+## What Changes In The RL Environment
+
+This is a read operation.
+
+## What The Agent Gets Back
+
+Queue summaries, available assignment counts, role labels, and claim hints.
+
+## Security Boundary
+
+Queues are role-scoped. A Red worker should not see Blue-only assignments. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `claim_next_agent_assignment`
+- `get_agent_assignment_readiness`

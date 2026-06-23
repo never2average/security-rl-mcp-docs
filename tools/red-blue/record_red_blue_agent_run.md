@@ -1,11 +1,33 @@
 # `record_red_blue_agent_run`
 
-Attach non-issue Red/Blue agent output to the environment.
+Records a summary of one Red or Blue worker run.
 
-| Field | Value |
-| --- | --- |
-| MCP page name | `record_red_blue_agent_run` |
-| Current implementation | `record_red_blue_agent_run` |
-| Auth | Google/Dex OIDC bearer token, or temporary service bearer token |
+## Use This When
 
-Use this tool from a connected coding agent through `https://security-rl.useimmaculate.com/mcp`.
+Use this when a worker finishes a role loop and needs to submit run-level metadata separate from individual issues or fixes.
+
+## Inputs
+
+- Environment ID.
+- Experiment ID.
+- Role.
+- Assignment ID.
+- Run summary, status, metrics, and artifact references.
+
+## What Changes In The RL Environment
+
+A run record is attached to the experiment and can be used for evaluation and audit.
+
+## What The Agent Gets Back
+
+Run ID, stored status, linked events, and evaluation readiness.
+
+## Security Boundary
+
+Run summaries should respect role visibility and should not mix Red-only and Blue-only internal state. Authentication is expected to come from Google/Dex OAuth discovery for human-connected agents. Service bearer tokens are only a fallback for controlled workers.
+
+## Related Tools
+
+- `log_red_team_issue`
+- `record_blue_team_fix`
+- `record_agent_experiment_event`

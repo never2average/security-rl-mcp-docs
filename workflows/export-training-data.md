@@ -1,11 +1,33 @@
-# Export Training Data
+# Case Study: Export Training Data
 
-Typical tool sequence:
+This case study turns experiment trajectories into datasets for model improvement, evaluator analysis, or offline review.
 
-```text
-1. evaluate_blue_team_agent
-2. export_blue_team_training_dataset
-3. get_agent_experiment_episode
-```
+## Scenario
 
-Run this workflow from a connected coding agent after authenticating to the MCP endpoint.
+After several Red/Blue or Blue-only experiments, the user wants a dataset that captures observations, actions, outcomes, rewards, and state versions. The export must preserve enough context for training while excluding secrets and role-forbidden state.
+
+## Actors
+
+The experiment control plane stores events and outcomes. The exporter creates a dataset. The training harness or downstream pipeline consumes the exported records.
+
+## MCP Tools Used
+
+- `list_agent_experiment_events` to inspect trajectory events.
+- `get_agent_experiment_episode` to retrieve episode-level context.
+- `evaluate_agent_experiment` to ensure final scores exist.
+- `evaluate_blue_team_agent` for Blue-specific scoring.
+- `export_blue_team_training_dataset` to create a Blue training dataset.
+
+## Walkthrough
+
+The user selects an experiment or environment. The agent lists trajectory events and verifies that episodes have evaluation records. If scores are missing, it triggers evaluation before export.
+
+The exporter collects state observations, role-specific briefs, actions, tool calls, Red issues, Blue fixes, evaluator decisions, and reward values. It normalizes them into records that can be used for supervised fine-tuning, preference data, or reinforcement learning with a harness in the loop.
+
+## Observable Outcome
+
+The user receives a dataset artifact with traceable environment IDs, state versions, episode IDs, rewards, and sanitized observations. The dataset can be filtered by role, model, environment, severity, or outcome.
+
+## Data Produced
+
+The export produces JSONL-style training records, evaluator summaries, and metadata that says which state schema version and reward policy generated the data.
