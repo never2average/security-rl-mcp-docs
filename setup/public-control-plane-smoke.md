@@ -1,15 +1,29 @@
 # Public Control Plane Smoke
 
-Run from the server checkout:
+Use this page to confirm the public MCP control plane is reachable and advertising OAuth discovery.
 
-```bash
-corepack pnpm run smoke:public-control-plane
+## Endpoint
+
+```text
+https://security-rl.useimmaculate.com/mcp
 ```
 
-Raw MCP smoke:
+## Unauthenticated Check
+
+A request without OAuth should return `401` and a `WWW-Authenticate` header pointing at protected-resource metadata. That is expected.
 
 ```bash
-curl -fsS   -H "Authorization: Bearer $AGENT_BEARER_TOKEN"   -H "accept: application/json, text/event-stream"   -H "content-type: application/json"   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'   https://security-rl.useimmaculate.com/mcp
+curl -i https://security-rl.useimmaculate.com/mcp
 ```
 
-Expected: HTTP 200 with a JSON-RPC `tools/list` response.
+Expected behavior:
+
+- HTTP `401` when no OAuth token is present.
+- `WWW-Authenticate` includes the protected resource metadata URL.
+- The metadata URL advertises Dex/OIDC as the authorization server.
+
+## Authenticated Check
+
+For normal users, complete Google login through the coding-agent MCP OAuth flow. After OAuth completes, the client should be able to call `tools/list` without asking the user to paste a shared token.
+
+For automated workers, use a scoped service credential managed by the worker runtime. Do not publish that credential in user documentation.
